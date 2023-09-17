@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=Indie+Flower&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Montserrat:wght@100&display=swap");
 :root {
   --primary-color: rgb(102, 53, 102);
   --secondary-color: rgb(143, 78, 34);
@@ -11,7 +11,7 @@
 }
 
 body {
-  font-family: "Indie Flower", cursive;
+  font-family: "Montserrat", cursive;
 }
 
 .container {
