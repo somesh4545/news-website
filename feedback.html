@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Feedback Form</title>
+    <style>
+      /* Add some basic styling for your form */
+      body {
+        font-family: Arial, sans-serif;
+      }
+      .container {
+        max-width: 400px;
+        margin: 0 auto;
+        padding: 20px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+        /* margin-top: 100px; */
+      }
+
+      label {
+        display: block;
+        margin-bottom: 10px;
+      }
+      select,
+      input,
+      textarea {
+        width: 90%;
+        padding: 10px;
+        margin-bottom: 15px;
+        border: 1px solid #ccc;
+        border-radius: 3px;
+      }
+      select {
+        width: 95%;
+      }
+      button {
+        background-color: #007bff;
+        color: #fff;
+        padding: 8px 16px;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+      }
+      button:hover {
+        background-color: rgb(36, 204, 95);
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h2>Send us your feedback!</h2>
+      <form action="#" method="post">
+        <label for="userName">Your Name:</label>
+        <input type="text" id="userName" name="userName" required />
+
+        <label for="userEmail">Your Email:</label>
+        <input type="email" id="userEmail" name="userEmail" required />
+
+        <label for="category">Did you achieve your goal:</label>
+        <select id="category" name="category">
+          <option value="content">Yes</option>
+          <option value="design">No</option>
+          <option value="navigation">Partially</option>
+        </select>
+
+        <label for="reasonForVisit">Reason for Your Visit:</label>
+        <select id="reasonForVisit" name="reasonForVisit">
+          <option value="news">News</option>
+          <option value="entertainment">Entertainment</option>
+          <option value="sports">Sports</option>
+          <option value="others">Others</option>
+        </select>
+
+        <label for="reasonNotAchieved"
+          >Reason You Could Not Achieve Your Goal:</label
+        >
+        <select id="reasonNotAchieved" name="reasonNotAchieved">
+          <option value="content">Content Quality</option>
+          <option value="usability">Usability Issues</option>
+          <option value="technical">Technical Problems</option>
+          <option value="other">Other</option>
+        </select>
+
+        <label for="feedback"
+          >Do you have any suggestion to make website better?</label
+        >
+        <textarea id="feedback" name="feedback" rows="4"></textarea>
+
+        <button type="submit">Submit</button>
+      </form>
+    </div>
+    <script src="https://www.gstatic.com/firebasejs/7.7.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.7.0/firebase-firestore.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.7.0/firebase-auth.js"></script>
+
+    <script src="./backend/db.js"></script>
+    <script>
+      const form = document.querySelector("form");
+      const userName = document.getElementById("userName");
+      const userEmail = document.getElementById("userEmail");
+      const category = document.getElementById("category");
+      const reasonForVisit = document.getElementById("reasonForVisit");
+      const reasonNotAchieved = document.getElementById("reasonNotAchieved");
+      const feedback = document.getElementById("feedback");
+      form.addEventListener("submit", function (e) {
+        e.preventDefault(); // Prevent the form from submitting normally
+
+        // Get the form values
+        const formData = {
+          userName: userName.value,
+          userEmail: userEmail.value,
+
+          category: category.value,
+          reasonForVisit: reasonForVisit.value,
+          reasonNotAchieved: reasonNotAchieved.value,
+          feedback: feedback.value,
+        };
+        console.log(formData);
+
+        // Insert data into Firebase
+        db.collection("feedbacks")
+          .add(formData)
+          .then(function (docRef) {
+            console.log("Document written with ID: ", docRef.id);
+            alert("Feedback submitted successfully!");
+            window.open("./home/", (target = "_self"));
+          })
+          .catch(function (error) {
+            console.error("Error adding document: ", error);
+            alert(
+              "An error occurred while submitting feedback. Please try again later."
+            );
+          });
+      });
+    </script>
+  </body>
+</html>
