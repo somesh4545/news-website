@@ -33,10 +33,11 @@ function getCategories() {
     .get()
     .then((querySnapshot) => {
       querySnapshot.forEach((item) => {
-        var span = document.createElement("span");
-        span.className = "category-name";
-        span.innerHTML = item.id;
-        container.appendChild(span);
+        var link = document.createElement("a");
+        link.className = "category-name";
+        link.innerHTML = item.id;
+        link.href = `/category/?id=${item.id}`;
+        container.appendChild(link);
       });
     });
 }

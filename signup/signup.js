@@ -2,6 +2,7 @@ function signup() {
   event.preventDefault();
   var username = document.getElementById("username").value;
   var email = document.getElementById("emailId").value;
+  var city = document.getElementById("city").value;
   var password = document.getElementById("password").value;
   var msgBlock = document.getElementById("msgBlock");
   var msg = document.getElementById("msg");
@@ -18,6 +19,7 @@ function signup() {
         email: email,
         username: username,
         password: password,
+        city: city,
         lastLogin: Date.now(),
       });
       msgBlock.style = "display: block;";

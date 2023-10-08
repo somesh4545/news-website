@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Search</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <!-- Latest compiled and minified CSS -->
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css"
+    />
+
+    <!-- jQuery library -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+    <!-- Latest compiled JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+
+    <!-- font awesome cdn link -->
+    <link
+      href="https://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css"
+      rel="stylesheet"
+    />
+
+    <style>
+      body {
+        background-color: #f7f8f9;
+      }
+
+      #searchInput {
+        display: none;
+      }
+
+      #searchIcon {
+        display: block;
+        color: white;
+      }
+
+      #closeIcon {
+        display: none;
+      }
+
+      .container {
+        display: flex;
+        flex-direction: column;
+
+        height: 100vh;
+        width: 50%;
+      }
+
+      .search-result {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 20px;
+      }
+
+      .sortby-container {
+        display: flex;
+        flex-direction: row;
+      }
+
+      .sort-dropdown {
+        background-color: #f7f8f9;
+        border: none;
+        outline: none;
+        margin-left: 10px;
+      }
+
+      .search-results {
+        font-size: medium;
+        font-weight: bolder;
+      }
+
+      .middle-container {
+        display: inline-block;
+        flex-direction: column;
+        /* justify-content: center; */
+        /* justify-items: center; */
+        background-color: white;
+        padding: 20px;
+        border-radius: 10px;
+        margin-bottom: 15px;
+        box-shadow: 1px 1px 3px darkgray;
+        position: relative;
+        animation-name: example;
+        animation-duration: 1s;
+      }
+
+      @keyframes example {
+        from {
+          /* background-color: red; */
+          top: 100px;
+        }
+        to {
+          top: 0px;
+        }
+      }
+
+      .inner-element {
+        display: inline-block;
+        flex-direction: column;
+        justify-content: center;
+        justify-items: center;
+        background-color: white;
+
+        width: 100%;
+        border-radius: 10px;
+      }
+
+      .upper-element {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+      }
+
+      .heading-company {
+        display: flex;
+        padding: 2px;
+        /* margin: 4px; */
+        font-weight: bold;
+      }
+
+      .fields {
+        display: flex;
+        /* margin-top: -10px; */
+        padding: 0px;
+        font-weight: bold;
+        margin: 0px;
+        margin-bottom: 5px;
+      }
+
+      .inner-navigations {
+        display: flex;
+        flex-direction: row;
+        font-size: small;
+        font-weight: 100;
+        margin-bottom: 6px;
+      }
+
+      .news-description {
+        display: flex;
+        padding-top: 3px;
+        opacity: 0.5;
+      }
+      .news-description span {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        display: -webkit-box;
+        -webkit-line-clamp: 2; /* number of lines to show */
+        -webkit-box-orient: vertical;
+      }
+      .show-more {
+        margin-top: 10px;
+      }
+
+      .result {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border-style: none;
+        background-color: #000;
+        color: white;
+        padding: 5px;
+        height: 25px;
+        width: 100px;
+        border-radius: 3px;
+        text-decoration: none;
+      }
+    </style>
+  </head>
+
+  <body>
+    <!-- nav bar -->
+    <nav class="navbar navbar-default" style="background-color: #fff">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <a
+            class="navbar-brand"
+            href="../home/index.html"
+            style="color: #000; font-weight: bold"
+            >Pune Times</a
+          >
+        </div>
+        <form class="navbar-form navbar-right" action="../search/" method="get">
+          <div class="input-group">
+            <input
+              type="text"
+              class="form-control"
+              id="searchInput"
+              name="search"
+              placeholder="Search"
+            />
+            <div class="input-group-btn">
+              <button
+                class="btn btn-default"
+                type="button"
+                style="background-color: #000"
+                onClick="showSearch()"
+              >
+                <i id="searchIcon" class="fa fa-search"></i>
+              </button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </nav>
+
+    <!-- main container -->
+    <div class="container">
+      <div class="search-result">
+        <h4 class="search-results">
+          Search results: <span id="search-results-count"></span>
+        </h4>
+        <div class="sortby-container">
+          <h4 class="search-results">Sort by:</h4>
+          <select
+            name="sort"
+            id="sort"
+            class="sort-dropdown"
+            onchange="sort(this)"
+          >
+            <option value="latest">Latest</option>
+            <option value="old">Old</option>
+            <option value="location">Location</option>
+          </select>
+        </div>
+      </div>
+      <div id="results"></div>
+    </div>
+    <script src="https://www.gstatic.com/firebasejs/7.7.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.7.0/firebase-firestore.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.7.0/firebase-auth.js"></script>
+
+    <script src="../backend/db.js"></script>
+    <script src="./category.js"></script>
+
+    <!-- search icon display file -->
+    <script src="../js/showSearch.js"></script>
+  </body>
+</html>
