@@ -36,7 +36,7 @@ function getCategories() {
         var link = document.createElement("a");
         link.className = "category-name";
         link.innerHTML = item.id;
-        link.href = `/category/?id=${item.id}`;
+        link.href = `../category/?id=${item.id}`;
         container.appendChild(link);
       });
     });
@@ -183,3 +183,25 @@ function bottomContainer() {
 }
 
 bottomContainer();
+
+function get_main_headline() {
+  var div = document.getElementById("main-news");
+  var elements = [];
+
+  db.collection("news")
+    .limit(3)
+    .get()
+    .then((querySnapshot) => {
+      querySnapshot.forEach((item) => {
+        elements.push(item.data().title);
+
+        var links = document.createElement("a");
+        links.innerHTML = " | " + item.data().title + " | ";
+        links.href = `../detials/details.html?id=${item.id}`;
+
+        div.appendChild(links);
+      });
+    });
+}
+
+get_main_headline();

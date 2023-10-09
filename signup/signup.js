@@ -4,6 +4,7 @@ function signup() {
   var email = document.getElementById("emailId").value;
   var city = document.getElementById("city").value;
   var password = document.getElementById("password").value;
+  var phoneno = document.getElementById("phoneno").value;
   var msgBlock = document.getElementById("msgBlock");
   var msg = document.getElementById("msg");
 
@@ -20,6 +21,7 @@ function signup() {
         username: username,
         password: password,
         city: city,
+        phoneno: phoneno,
         lastLogin: Date.now(),
       });
       msgBlock.style = "display: block;";
